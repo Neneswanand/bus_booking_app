@@ -1,0 +1,5 @@
+json.message "User Updated Successfully!!!!!"
+
+json.user do |user|
+  json.partial! "users/user", user: @user
+end

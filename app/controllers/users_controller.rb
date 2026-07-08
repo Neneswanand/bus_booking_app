@@ -44,7 +44,6 @@ class UsersController < ApplicationController
 
 
   def update
-    pp user_params, "_________________________________________"
     @user = User.find(params[:id])
 
     @user.update!(user_params)

@@ -13,12 +13,13 @@ class User < ApplicationRecord
 
   VALID_PASSWORD = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}\z/
 
+  
   # GENDER_OPTIONS = %w[Male Female Other]
   enum :gender, {
     male: 0,
     female: 1,
     other: 2
-  }
+  }, validate: true
 
   # validates :gender, inclusion: {
   #   in: %w[male female other]
@@ -29,6 +30,8 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: {
     with: VALID_EMAIL
   }
+  
+  before_save :downcase_email
 
   validates :password, presence: true, format: {
     with: VALID_PASSWORD
@@ -40,7 +43,11 @@ class User < ApplicationRecord
 
   validates :phone, presence: true, length: { is: 10}
 
-  validates :age, presence: true, numericality: true
+  validates :age, presence: true, numericality: true, numericality: {
+    greater_than: 0,
+    less_than: 150
+  }
+
 
   # validates :gender, presence: true, inclusion: {
   #   in: GENDER_OPTIONS,
@@ -53,5 +60,14 @@ class User < ApplicationRecord
 
   def name_should_not_be_an_email
     errors.add(:name, "Should Not Be Email!!!") if name == email
+  end
+
+  def downcase_gender
+    self.gender = gender.downcase if gender.present?
+  end
+
+
+  def downcase_email
+    self.email = email.downcase if email.present?
   end
 end

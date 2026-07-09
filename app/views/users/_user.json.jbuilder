@@ -1,3 +1,4 @@
+json.u_id user.u_id
 json.id user.id
 json.name user.name
 json.email user.email

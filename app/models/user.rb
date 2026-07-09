@@ -3,6 +3,9 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  before_save :downcase_email
+
+  before_create :generate_u_id
 
   enum :role, {
     user: 0, 
@@ -14,24 +17,22 @@ class User < ApplicationRecord
   VALID_PASSWORD = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}\z/
 
   
-  # GENDER_OPTIONS = %w[Male Female Other]
-  enum :gender, {
-    male: 0,
-    female: 1,
-    other: 2
-  }, validate: true
+  GENDER_OPTIONS = %w[Male Female Other]
+  # enum :gender, {
+  #   male: 0,
+  #   female: 1,
+  #   other: 2
+  # }, validate: true
 
-  # validates :gender, inclusion: {
-  #   in: %w[male female other]
-  # }
+  validates :gender, inclusion: {
+    in: %w[male female other]
+  }
 
   validates :name, presence: true
 
   validates :email, presence: true, uniqueness: true, format: {
     with: VALID_EMAIL
   }
-  
-  before_save :downcase_email
 
   validates :password, presence: true, format: {
     with: VALID_PASSWORD
@@ -62,12 +63,19 @@ class User < ApplicationRecord
     errors.add(:name, "Should Not Be Email!!!") if name == email
   end
 
-  def downcase_gender
-    self.gender = gender.downcase if gender.present?
+  def downcase_email
+    self.email = email.downcase if email.present?         # email attribute of current User object
   end
 
+  def generate_u_id
+    last_user = User.order(:id).last
 
-  def downcase_email
-    self.email = email.downcase if email.present?
+    @next_number = 
+    if last_user&.u_id.present?
+      last_user.u_id.delete("BBA").to_i + 1
+    else
+      1
+    end
+    self.u_id = "BBA#{next_number.to_s.rjust(6, "0")}"
   end
 end

@@ -45,11 +45,11 @@ class RoutesController < ApplicationController
 
   private
     def set_route
-      @route = Route.find(params.expect(:id))
+      @route = Route.find(params[:id])
     end
 
     
     def route_params
-      params.expect(route: [ :source, :destination, :distance ])
+      params.require(:route).permit(:source, :destination, :distance)
     end
 end

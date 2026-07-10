@@ -1,19 +1,5 @@
 class UsersController < ApplicationController
-  # def register
-  #   @user = User.new(user_params)
-
-  #   if @user.save
-  #     render :register, status: :created
-  #   #   render json: {
-  #   #     message: "Registration Successful!"
-  #   #   }, status: :created
-  #   else
-  #     # render  status: :unprocessable_entity
-  #     render json: {
-  #       errors: @user.errors.full_messages
-  #     }, status: :unprocessable_entity
-  #   end
-  # end
+  before_action :set_route, only: %i[ show update destroy ]
 
 
   def create
@@ -26,19 +12,20 @@ class UsersController < ApplicationController
   def index
     # @users = User.all 
     @users = User.order(:id)
+
     render :index, status: :ok
   end
 
 
   def show
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id])
 
     render :show, status: :ok         # Rails automatically calls render implicitly behind the scenes.
   end
 
 
   def update
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id])
 
     @user.update!(user_params)
   
@@ -47,9 +34,10 @@ class UsersController < ApplicationController
 
 
   def destroy
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id])
 
     @user.destroy!
+    
     render :destroy
   end
 
@@ -69,6 +57,10 @@ class UsersController < ApplicationController
 
   
   private
+
+    def set_route
+      @user = User.find(params[:id])
+    end
 
     def user_params
       params.permit(:name, :email, :password, :role, :phone, :age, :gender)

@@ -13,7 +13,8 @@ class ApplicationController < ActionController::API
 
   def record_invalid(exception)
     render json: {
-      errors: exception.message
+      # errors: exception.message
+      errors: exception.record.errors.messages       # Returns structured errors: { "errors": { "name": ["can't be blank"], "email": ["is invalid"] } } 
     }, status: :unprocessable_entity
   end
 end

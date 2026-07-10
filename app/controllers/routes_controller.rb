@@ -36,8 +36,6 @@ class RoutesController < ApplicationController
 
 
   def destroy
-    # @route = Route.find(params[:id])
-
     @route.destroy
 
     render :destroy, status: :ok

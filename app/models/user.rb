@@ -5,6 +5,10 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
+  before_validation :capitalize_gender
+
+  before_save :titleize_name
+
   before_create :generate_u_id
 
   enum :role, {
@@ -23,10 +27,6 @@ class User < ApplicationRecord
   #   female: 1,
   #   other: 2
   # }, validate: true
-
-  validates :gender, inclusion: {
-    in: %w[male female other]
-  }
 
   validates :name, presence: true
 
@@ -50,10 +50,10 @@ class User < ApplicationRecord
   }
 
 
-  # validates :gender, presence: true, inclusion: {
-  #   in: GENDER_OPTIONS,
-  #   message: "%{value} is not valid gender option!!!"
-  # }
+  validates :gender, presence: true, inclusion: {
+    in: GENDER_OPTIONS,
+    message: "%{value} is not valid gender option!!!"
+  }
 
   validate :name_should_not_be_an_email
 
@@ -67,10 +67,19 @@ class User < ApplicationRecord
     self.email = email.downcase if email.present?         # email attribute of current User object
   end
 
+  def capitalize_gender
+    # self.gender = gender.capitalize if gender.present?
+    self.gender = gender.humanize.delete(" ") if gender.present?
+  end
+
+  def titleize_name
+    self.name = name.titleize if name.present?
+  end
+
   def generate_u_id
     last_user = User.order(:id).last
 
-    @next_number = 
+    next_number = 
     if last_user&.u_id.present?
       last_user.u_id.delete("BBA").to_i + 1
     else

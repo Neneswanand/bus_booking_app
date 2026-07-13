@@ -5,22 +5,37 @@ class Bus < ApplicationRecord
 
   before_create :initialize_available_seats
 
-  before_create :generate_b_id
+  before_create :generate_bus_id
 
-  validates :bus_no, presence: true
+  before_create :initialize_available_seats
 
-  validates :bus_rn, presence: true, uniqueness: true
+  before_save :downcase_bus_type
 
-  validates :total_seats,presence: true, numericality: true, numericality: {
+  enum :bus_type,{
+    non_ac: 0,
+    ac: 1,
+    sleeper: 2
+  }, default: :non_ac
+
+  validates :bus_number, presence: true
+
+  validates :bus_name, presence: true
+
+  # validates :registration_number, presence: true, uniqueness: true
+
+  validates :total_seats,presence: true, numericality: {
     greater_than: 0
   }
 
-  validates :available_seats, presence: true, numericality: true, numericality: {
-    greater_than_or_equal_to: 0
-  }
+  # validates :available_seats, presence: true, numericality: {
+  #   greater_than_or_equal_to: 0
+  # }
 
-  validates :window_seats, numericality: {
-    less_than_or_equal_to: :total_seats
+  VALID_REGISTRATION_NUMBER = /\A[A-Z]{2}\d{2}[A-Z]{2}\d{4}\z/
+
+  validates :registration_number, presence: true, uniqueness: true, format: {
+    with: VALID_REGISTRATION_NUMBER,
+    message: "Must Be Like XX00XX1234"
   }
 
   private
@@ -29,15 +44,19 @@ class Bus < ApplicationRecord
     self.available_seats = total_seats
   end
 
-  def generate_b_id
+  def generate_bus_id
     last_bus = Bus.order(:id).last
 
     next_number = 
-    if last_bus&.b_id.present?
-      last_bus.b_id.delete("BUS").to_i + 1
+    if last_bus&.bus_id.present?
+      last_bus.bus_id.delete("BUS").to_i + 1
     else
       1
     end
-    self.b_id = "BUS#{next_number.to_s.rjust(6, "0")}"
+    self.bus_id = "BUS#{next_number.to_s.rjust(6, "0")}"
+  end
+
+  def downcase_bus_type
+    self.bus_type = bus_type.strip.downcase if bus_type.present?          # self.bus_type => bus_type attribute of current route object
   end
 end

@@ -19,9 +19,9 @@ class RoutesController < ApplicationController
     @route = Route.new(route_params)
 
     if @route.save
-      render :create, status: :created, location: @route
+      render :create, status: :created
     else
-      render json: @route.errors, status: :unprocessable_content
+      render json: @route.errors, status: :unprocessable_entity
     end
   end
 
@@ -30,7 +30,7 @@ class RoutesController < ApplicationController
     if @route.update(route_params)
       render :update, status: :ok, location: @route
     else
-      render json: @route.errors, status: :unprocessable_content
+      render json: @route.errors, status: :unprocessable_entity
     end
   end
 

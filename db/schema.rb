@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_10_052407) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_13_082717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,12 +26,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_052407) do
   end
 
   create_table "buses", force: :cascade do |t|
+    t.string "amenities", default: [], array: true
     t.integer "available_seats"
-    t.string "bus_no"
-    t.integer "bus_rn"
+    t.string "bus_id"
+    t.string "bus_name"
+    t.string "bus_number"
+    t.string "bus_type"
     t.datetime "created_at", null: false
     t.string "departure_time"
     t.decimal "price"
+    t.string "registration_number"
     t.bigint "route_id", null: false
     t.integer "total_seats"
     t.datetime "updated_at", null: false

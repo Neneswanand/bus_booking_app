@@ -76,15 +76,26 @@ class User < ApplicationRecord
     self.name = name.titleize if name.present?
   end
 
-  def generate_u_id
-    last_user = User.order(:id).last
+  # def generate_u_id
+  #   last_user = User.order(:id).last
 
-    next_number = 
-    if last_user&.u_id.present?
-      last_user.u_id.delete("BBA").to_i + 1
+  #   next_number = 
+  #   if last_user&.u_id.present?
+  #     last_user.u_id.delete("BBA").to_i + 1
+  #   else
+  #     1
+  #   end
+  #   self.u_id = "BBA#{next_number.to_s.rjust(6, "0")}"
+  # end
+
+  def generate_u_id
+    last_user = User.order(:id)
+
+    if last_user.nil?
+      self.u_id = "BBA000001"
     else
-      1
+      next_number = last_user.u_id.delete("BBA").to_i + 1
+      self.u_id = "BBA#{next_number.to_s.rjust(6, "0")}"
     end
-    self.u_id = "BBA#{next_number.to_s.rjust(6, "0")}"
   end
 end

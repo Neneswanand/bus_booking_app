@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_13_082717) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_14_075710) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "bookings", force: :cascade do |t|
+    t.string "booking_id"
     t.bigint "bus_id", null: false
     t.datetime "created_at", null: false
     t.integer "seats"
@@ -39,7 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_082717) do
     t.bigint "route_id", null: false
     t.integer "total_seats"
     t.datetime "updated_at", null: false
-    t.integer "window_seats"
     t.index ["route_id"], name: "index_buses_on_route_id"
   end
 

@@ -5,11 +5,17 @@ class Bus < ApplicationRecord
 
   before_validation :downcase_bus_type
 
+  before_validation :upcase_departure_time
+
   before_create :initialize_available_seats
 
   before_create :generate_bus_id
 
   before_create :initialize_available_seats
+
+  before_save :titleize_bus_name
+
+  before_save :upcase_bus_number
 
   # enum :bus_type,{
   #   non_ac: 0,
@@ -17,7 +23,15 @@ class Bus < ApplicationRecord
   #   sleeper: 2
   # }, default: :non_ac
 
-  BUS_TYPE = %W[non_ac ac sleeper]
+  VALID_BUS_TYPE = %W[non_ac ac sleeper]
+
+  VALID_REGISTRATION_NUMBER = /\A[A-Z]{2}\d{2}[A-Z]{2}\d{4}\z/
+
+  VALID_DEPARTURE_TIME = /\A(0[1-9]|1[0-2])[:.][0-5]\d[AP]M\z/
+
+  validates :departure_time, presence: true, format: {
+    with: VALID_DEPARTURE_TIME
+  }
 
   validates :bus_number, presence: true
 
@@ -28,14 +42,12 @@ class Bus < ApplicationRecord
   }
 
   validates :bus_type, presence: true, inclusion: {
-    in: BUS_TYPE
+    in: VALID_BUS_TYPE
   }
 
-  # validates :available_seats, presence: true, numericality: {
-  #   greater_than_or_equal_to: 0
-  # }
-
-  VALID_REGISTRATION_NUMBER = /\A[A-Z]{2}\d{2}[A-Z]{2}\d{4}\z/
+  validates :available_seats, presence: true, numericality: {
+    greater_than_or_equal_to: 0,
+  }
 
   validates :registration_number, presence: true, uniqueness: true, format: {
     with: VALID_REGISTRATION_NUMBER,
@@ -51,16 +63,28 @@ class Bus < ApplicationRecord
   def generate_bus_id
     last_bus = Bus.order(:id).last
 
-    next_number = 
-    if last_bus&.bus_id.present?
-      last_bus.bus_id.delete("BUS").to_i + 1
+    if last_bus.nil?
+      self.bus_id = "BUS000001"
     else
-      1
+      number = last_bus.bus_id.delete("BUS").to_i + 1
+      self.bus_id = "BUS#{number.to_s.rjust(6, "0")}"
     end
-    self.bus_id = "BUS#{next_number.to_s.rjust(6, "0")}"
+    
   end
 
   def downcase_bus_type
     self.bus_type = bus_type.strip.downcase if bus_type.present?          # self.bus_type => bus_type attribute of current route object
+  end
+
+  def titleize_bus_name
+    self.bus_name = bus_name.titleize if bus_name.present?
+  end
+
+  def upcase_bus_number
+    self.bus_number = bus_number.upcase if bus_number.present?
+  end
+
+  def upcase_departure_time
+    self.departure_time = departure_time.upcase.delete(" ") if departure_time.present?
   end
 end

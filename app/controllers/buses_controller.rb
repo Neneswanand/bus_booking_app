@@ -21,7 +21,7 @@ class BusesController < ApplicationController
     if @bus.save
       render :create, status: :created
     else
-      render json: @bus.errors, status: :unprocessable_entity
+      render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -30,7 +30,7 @@ class BusesController < ApplicationController
     if @bus.update(bus_params)
       render :update, status: :ok
     else
-      render json: @bus.errors, status: :unprocessable_entity
+      render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -48,6 +48,6 @@ class BusesController < ApplicationController
 
     
     def bus_params
-      params.permit(:bus_name, :registration_number, :bus_number, :bus_type, :total_seats, :departure_time, :route_id, amenities: [])
+      params.require(:bus).permit(:bus_name, :registration_number, :bus_number, :bus_type, :total_seats, :departure_time, :route_id, :available_seats, :price, amenities: [])
     end
 end

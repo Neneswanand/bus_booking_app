@@ -1,7 +1,7 @@
 json.id bus.id
 json.bus_id bus.bus_id
 json.bus_name bus.bus_name
-json.bus_number bus.bus_number
+# json.bus_number bus.bus_number
 json.registration_number bus.registration_number
 
 

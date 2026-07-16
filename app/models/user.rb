@@ -13,20 +13,15 @@ class User < ApplicationRecord
 
   enum :role, {
     user: 0, 
-    admin: 1
+    admin: 1,
+    super_admin: 2
   }, default: :user
 
   VALID_EMAIL = /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/
 
   VALID_PASSWORD = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}\z/
 
-  
   GENDER_OPTIONS = %w[Male Female Other]
-  # enum :gender, {
-  #   male: 0,
-  #   female: 1,
-  #   other: 2
-  # }, validate: true
 
   validates :name, presence: true
 
@@ -39,7 +34,7 @@ class User < ApplicationRecord
   }, on: :create
 
   # validates :role, inclusion: {
-  #   in: %w[user admin]
+  #   in: %w[user admin super_admin]
   #   }
 
   validates :phone, presence: true, length: { is: 10}
@@ -60,7 +55,7 @@ class User < ApplicationRecord
   private
 
   def name_should_not_be_an_email
-    errors.add(:name, "Should Not Be Email!!!") if name == email
+    errors.add(:name, "Should Not Be An Email!!!") if name == email
   end
 
   def downcase_email
@@ -76,20 +71,8 @@ class User < ApplicationRecord
     self.name = name.titleize if name.present?
   end
 
-  # def generate_u_id
-  #   last_user = User.order(:id).last
-
-  #   next_number = 
-  #   if last_user&.u_id.present?
-  #     last_user.u_id.delete("BBA").to_i + 1
-  #   else
-  #     1
-  #   end
-  #   self.u_id = "BBA#{next_number.to_s.rjust(6, "0")}"
-  # end
-
   def generate_u_id
-    last_user = User.order(:id)
+    last_user = User.order(:id).last
 
     if last_user.nil?
       self.u_id = "BBA000001"

@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
-  before_action :set_route, only: %i[ show update destroy ]
+  before_action :set_user, only: %i[ show update destroy ]
 
 
   def create
     @user = User.create!(user_params)
 
-    render :register, status: :created
+    p @user
+    p @user.persisted?
+    render :create, status: :created
   end
 
 
@@ -58,12 +60,12 @@ class UsersController < ApplicationController
   
   private
 
-    def set_route
+    def set_user
       @user = User.find(params[:id])
     end
 
     def user_params
-      params.permit(:name, :email, :password, :role, :phone, :age, :gender)
+      params.require(:user).permit(:name, :email, :password, :role, :phone, :age, :gender)
     end
 
     def login_params

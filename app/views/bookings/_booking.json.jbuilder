@@ -5,7 +5,7 @@ json.seats booking.seats
 
 json.bus_id booking.bus.bus_id
 json.bus_name booking.bus.bus_name
-# json.bus_number booking.bus.bus_number
+json.bus_number booking.bus.bus_number
 json.registration_number booking.bus.registration_number
 json.bus_type booking.bus.bus_type
 

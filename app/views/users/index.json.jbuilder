@@ -2,7 +2,7 @@
 #   json.extract! users, :id, :name, :email, :role
 # end
 
-json.Total_Count @users.count
+json.total_count @users.count
 
 # json.users @users do |user|
 #   json.id user.id

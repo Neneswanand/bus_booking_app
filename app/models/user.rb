@@ -14,7 +14,7 @@ class User < ApplicationRecord
   enum :role, {
     user: 0, 
     admin: 1,
-    super_admin: 2
+    # super_admin: 2
   }, default: :user
 
   VALID_EMAIL = /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/

@@ -2,12 +2,10 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
 
 
-  def create
+  def register
     @user = User.create!(user_params)
 
-    p @user
-    p @user.persisted?
-    render :create, status: :created
+    render :register, status: :created
   end
 
 

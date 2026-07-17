@@ -17,13 +17,7 @@ class Bus < ApplicationRecord
 
   before_save :upcase_bus_number
 
-  # enum :bus_type,{
-  #   non_ac: 0,
-  #   ac: 1,
-  #   sleeper: 2
-  # }, default: :non_ac
-
-  VALID_BUS_TYPE = %W[non_ac ac sleeper]
+  VALID_BUS_TYPE = ["non_ac", "ac", "sleeper"]
 
   VALID_REGISTRATION_NUMBER = /\A[A-Z]{2}\d{2}[A-Z]{2}\d{4}\z/
 
@@ -58,18 +52,6 @@ class Bus < ApplicationRecord
 
   def initialize_available_seats
     self.available_seats = total_seats
-  end
-
-  def generate_bus_id
-    last_bus = Bus.order(:id).last
-
-    if last_bus.nil?
-      self.bus_id = "BUS000001"
-    else
-      number = last_bus.bus_id.delete("BUS").to_i + 1
-      self.bus_id = "BUS#{number.to_s.rjust(6, "0")}"
-    end
-    
   end
 
   def downcase_bus_type

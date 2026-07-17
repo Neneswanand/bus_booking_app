@@ -9,19 +9,17 @@ class User < ApplicationRecord
 
   before_save :titleize_name
 
-  before_create :generate_u_id
-
   enum :role, {
     user: 0, 
     admin: 1,
-    # super_admin: 2
+    super_admin: 2
   }, default: :user
 
   VALID_EMAIL = /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/
 
   VALID_PASSWORD = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}\z/
 
-  GENDER_OPTIONS = %w[Male Female Other]
+  GENDER_OPTIONS = ["Male", "Female", "Other"]
 
   validates :name, presence: true
 
@@ -69,16 +67,5 @@ class User < ApplicationRecord
 
   def titleize_name
     self.name = name.titleize if name.present?
-  end
-
-  def generate_u_id
-    last_user = User.order(:id).last
-
-    if last_user.nil?
-      self.u_id = "BBA000001"
-    else
-      next_number = last_user.u_id.delete("BBA").to_i + 1
-      self.u_id = "BBA#{next_number.to_s.rjust(6, "0")}"
-    end
   end
 end

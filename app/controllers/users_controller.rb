@@ -45,8 +45,11 @@ class UsersController < ApplicationController
   def login
     @user = User.find_by(email: login_params[:email])
 
-    if @user&.authenticate(login_params[:password])         # & => Safe navigator operator
-      render :login, status: :ok
+    if @user&.authenticate(login_params[:password]) 
+      # render :login, status: :ok
+      token = JsonWebToken.encode(
+        user_id: @user.id
+      )
     else
       render json: { 
         message: "Invalid Email or Password!!!"

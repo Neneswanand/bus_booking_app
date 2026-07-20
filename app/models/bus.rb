@@ -9,8 +9,6 @@ class Bus < ApplicationRecord
 
   before_create :initialize_available_seats
 
-  before_create :generate_bus_id
-
   before_create :initialize_available_seats
 
   before_save :titleize_bus_name
@@ -55,7 +53,7 @@ class Bus < ApplicationRecord
   end
 
   def downcase_bus_type
-    self.bus_type = bus_type.strip.downcase if bus_type.present?          # self.bus_type => bus_type attribute of current route object
+    self.bus_type = bus_type.strip.downcase          
   end
 
   def titleize_bus_name

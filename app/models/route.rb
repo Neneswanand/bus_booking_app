@@ -22,6 +22,7 @@ class Route < ApplicationRecord
 
   def source_and_destination_cannot_be_same
     return unless source.present? && destination.present?
+    
     if source.strip.downcase == destination.strip.downcase
       errors.add(:destination, "can not be same as source")
     end

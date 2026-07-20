@@ -31,10 +31,6 @@ class User < ApplicationRecord
     with: VALID_PASSWORD
   }, on: :create
 
-  # validates :role, inclusion: {
-  #   in: %w[user admin super_admin]
-  #   }
-
   validates :phone, presence: true, length: { is: 10}
 
   validates :age, presence: true, numericality: true, numericality: {
@@ -45,7 +41,6 @@ class User < ApplicationRecord
 
   validates :gender, presence: true, inclusion: {
     in: GENDER_OPTIONS,
-    message: "%{value} is not valid gender option!!!"
   }
 
   validate :name_should_not_be_an_email

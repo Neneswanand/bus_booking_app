@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show update destroy ]
+  skip_before_action :authenticate_request, only: [ :register, :login]
+  
+  before_action :authorize_super_admin, only: [:destroy]
+
+  before_action :set_user, only: [ :show, :update, :destroy ]
 
 
   def register
@@ -20,7 +24,7 @@ class UsersController < ApplicationController
   def show
     # @user = User.find(params[:id])
 
-    render :show, status: :ok         # Rails automatically calls render implicitly behind the scenes.
+    render :show, status: :ok         
   end
 
 
@@ -46,14 +50,17 @@ class UsersController < ApplicationController
     @user = User.find_by(email: login_params[:email])
 
     if @user&.authenticate(login_params[:password]) 
+      
+      token = JsonWebToken.encode(user_id: @user.id)
       # render :login, status: :ok
-      token = JsonWebToken.encode(
-        user_id: @user.id
-      )
+      render json: { 
+        message: "Login Successful!",
+        token: token
+      }, status: :ok
     else
       render json: { 
         message: "Invalid Email or Password!!!"
-      }, status: :unauthorized          #401 User isn't authenticated
+      }, status: :unauthorized         
     end
   end
 

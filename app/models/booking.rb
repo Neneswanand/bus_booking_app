@@ -1,9 +1,7 @@
 class Booking < ApplicationRecord
-  belongs_to :user          # one-to-one connection
+  belongs_to :user          # one-to-one 
 
-  belongs_to :bus
-
-  # before_create :generate_booking_id
+  belongs_to :bus           # one-to-one
 
   before_create :calculate_total_price
 

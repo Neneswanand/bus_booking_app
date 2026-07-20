@@ -1,5 +1,7 @@
 class RoutesController < ApplicationController
-  before_action :set_route, only: %i[ show update destroy ]
+  before_action :authorize_admin, only: [ :create ,:update, :destroy ]
+  
+  before_action :set_route, only: [ :show ,:update, :destroy ]
 
   def index
     # @routes = Route.all

@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: %i[ show update destroy ]
+  before_action :set_booking, only: [ :show, :update, :destroy ]
 
   def index
     @bookings = Booking.order(:id)

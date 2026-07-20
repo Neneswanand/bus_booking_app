@@ -1,5 +1,5 @@
 class BusesController < ApplicationController
-  before_action :set_bus, only: %i[ show update destroy ]
+  before_action :set_bus, only: [ :show, :update, :destroy ]
 
   def index
     # @buses = Bus.all

@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [ :register, :login]
   
+  before_action :authorize_admin, only: [ :index ]
+
   before_action :authorize_super_admin, only: [:destroy]
 
   before_action :set_user, only: [ :show, :update, :destroy ]
@@ -20,13 +22,20 @@ class UsersController < ApplicationController
     render :index, status: :ok
   end
 
-
-  def show
+  def show 
     # @user = User.find(params[:id])
 
-    render :show, status: :ok         
+    # render :show, status: :ok  
+    if @current_user.admin? || @current_user.super_admin?
+      @user = User.find(params[:id])
+    elsif @current_user.id == params[:id].to_i
+      @user = @current_user
+    else
+      render json: {
+        message: "Access Denied!!!!!"
+      }, status: :forbidden
+    end
   end
-
 
   def update
     # @user = User.find(params[:id])
@@ -54,12 +63,12 @@ class UsersController < ApplicationController
       token = JsonWebToken.encode(user_id: @user.id)
       # render :login, status: :ok
       render json: { 
-        message: "Login Successful!",
+        message: "Login Successful!!!!!",
         token: token
       }, status: :ok
     else
       render json: { 
-        message: "Invalid Email or Password!!!"
+        message: "Invalid Email or Password!!!!!"
       }, status: :unauthorized         
     end
   end

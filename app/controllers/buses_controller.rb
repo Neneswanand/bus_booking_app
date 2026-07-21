@@ -1,4 +1,6 @@
 class BusesController < ApplicationController
+  before_action :authorize_admin, only: [ :create ,:update, :destroy ]
+  
   before_action :set_bus, only: [ :show, :update, :destroy ]
 
   def index

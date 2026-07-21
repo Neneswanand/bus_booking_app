@@ -1,5 +1,5 @@
 class RoutesController < ApplicationController
-  before_action :authorize_admin, only: [ :create ,:update, :destroy ]
+  before_action :authorize_admin, only: [:create ,:update, :destroy ]
   
   before_action :set_route, only: [ :show ,:update, :destroy ]
 

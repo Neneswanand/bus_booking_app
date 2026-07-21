@@ -25,12 +25,14 @@ class ApplicationController < ActionController::API
       render json: {
         message: "Access Denied!!!"
       }, status: :forbidden
+    end
   end
 
   def authorize_super_admin
-    unless @current_user.super_admin
+    unless @current_user.super_admin?
       render json: {
         message: "Only Super Admin Allowed!!!"
       }, status: :forbidden
+    end
   end
 end

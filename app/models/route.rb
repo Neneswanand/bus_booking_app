@@ -2,6 +2,8 @@ class Route < ApplicationRecord
   has_many :buses, dependent: :destroy
 
   before_save :downcase_and_strip_source_and_destination
+
+  before_save :downcase_via
   
   validates :source, presence: true
 
@@ -18,6 +20,10 @@ class Route < ApplicationRecord
   def downcase_and_strip_source_and_destination
       self.source = source.strip.downcase if source.present?          # self.source => source attribute of current route object
       self.destination = destination.strip.downcase if destination.present?
+  end
+
+  def downcase_via
+    self.via = via.map { |via| via.to_s.strip.downcase }          
   end
 
   def source_and_destination_cannot_be_same

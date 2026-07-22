@@ -14,7 +14,6 @@ class UsersController < ApplicationController
     render :register, status: :created
   end
 
-
   def index
     # @users = User.all 
     @users = User.order(:id)
@@ -72,7 +71,6 @@ class UsersController < ApplicationController
       }, status: :unauthorized         
     end
   end
-
 
   
   private

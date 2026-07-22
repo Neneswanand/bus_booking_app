@@ -50,6 +50,6 @@ class RoutesController < ApplicationController
 
     
     def route_params
-      params.require(:route).permit(:source, :destination, :distance)
+      params.require(:route).permit(:source, :destination, :distance, via:[])
     end
 end

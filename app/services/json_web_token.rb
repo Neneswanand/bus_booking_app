@@ -12,9 +12,9 @@ class JsonWebToken
 
   def decode(token)
     JWT.decode(
-      token, 
+      token, # Token received from Authorization Header
       Rails.application.credentials.secret_key_base,
-      true,           #verify flag
+      true, # verify flag- verify the token before trusting it
       algorithm: "HS256"
     )
   end

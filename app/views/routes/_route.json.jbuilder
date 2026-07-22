@@ -4,5 +4,6 @@ json.id route.id
 json.source route.source
 json.destination route.destination
 json.distance route.distance
+json.via route.via
 json.created_at route.created_at
 json.updated_at route.updated_at

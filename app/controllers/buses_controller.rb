@@ -26,7 +26,7 @@ class BusesController < ApplicationController
       render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
   end
-
+  
 
   def update
     if @bus.update(bus_params)

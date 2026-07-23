@@ -25,8 +25,13 @@ Rails.application.routes.draw do
 
   resources :buses
 
-  resources :routes
+  resources :routes do 
+    collection do
+      get :search
+    end
+  end
 
+  get "/me", to: "users#me"
   # get "/routes", to: "routes#create"
 
   # resources :routes

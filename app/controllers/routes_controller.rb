@@ -28,6 +28,38 @@ class RoutesController < ApplicationController
   end
 
 
+  def search
+    source = params[:source]
+    destination = params[:destination]
+
+    matching_routes = []
+
+    matching_buses = []
+
+    Route.find_each do |route|
+      stops = [ route.source, route.via, route.destination ]
+  
+      stops = stops.flatten
+
+      source_index = stops.index(source)
+
+      destination_index = stops.index(destination)
+
+
+      if source_index && destination_index && source_index < destination_index
+        matching_routes << route
+
+        matching_buses.concat(route.buses)
+
+        @buses = matching_buses
+
+        @routes = matching_routes
+      end
+    end
+      render :search, status: :ok
+  end
+
+
   def update
     if @route.update(route_params)
       render :update, status: :ok, location: @route

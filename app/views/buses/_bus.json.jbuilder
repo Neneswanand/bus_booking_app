@@ -13,6 +13,7 @@ json.distance bus.route.distance
 json.departure_time bus.departure_time
 json.bus_type bus.bus_type
 json.total_seats bus.total_seats
+json.available_seats bus.available_seats
 json.amenities bus.amenities
 json.price bus.price
 

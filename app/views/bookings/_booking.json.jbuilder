@@ -18,4 +18,7 @@ json.bus_type booking.bus.bus_type
 
 json.total_price booking.total_price
 
+json.bus_id booking.bus.id
+
+
 

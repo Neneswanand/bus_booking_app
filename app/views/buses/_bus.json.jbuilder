@@ -4,7 +4,6 @@ json.bus_name bus.bus_name
 json.registration_number bus.registration_number
 
 
-# json.id bus.route.id
 json.source bus.route.source
 json.destination bus.route.destination
 json.distance bus.route.distance
@@ -17,5 +16,6 @@ json.available_seats bus.available_seats
 json.amenities bus.amenities
 json.price bus.price
 
+json.route_id bus.route.id
 json.created_at bus.created_at
 json.updated_at bus.updated_at

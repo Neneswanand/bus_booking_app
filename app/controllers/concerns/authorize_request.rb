@@ -1,4 +1,4 @@
-module AuthorizeRequest extend ActiveSupport::Concern
+module AuthorizeRequest extend ActiveSupport::Concern  
   included do 
     before_action :authenticate_request 
   end
@@ -17,9 +17,9 @@ module AuthorizeRequest extend ActiveSupport::Concern
     @current_user = User.find(user_id) 
     # @current_user = User.find(15) 
     
-    rescue JWT::DecodeError, JWT::ExpiredSignature
-    render json: {
-      message: "Unauthorized!!!!!"
-    }, status: :unauthorized
+    # rescue JWT::DecodeError, JWT::ExpiredSignature
+    # render json: {
+    #   message: "Unauthorized!!!!!"
+    # }, status: :unauthorized
   end
 end

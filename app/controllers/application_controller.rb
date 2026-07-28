@@ -5,6 +5,10 @@ class ApplicationController < ActionController::API
   
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
+  rescue_from JWT::DecodeError, with: :decode_error
+
+  rescue_from JWT::ExpiredSignature, with: :expired_Signature
+
   private
 
   def record_not_found(exception)
@@ -32,7 +36,19 @@ class ApplicationController < ActionController::API
     unless @current_user.super_admin?
       render json: {
         message: "Only Super Admin Allowed!!!"
-      }, status: :forbidden
+      }, status: :forbiddenJWT::DecodeError
     end
+  end
+
+  def decode_error(exception)
+    render json: { 
+      message: "Unauthorized!!!"
+    }, status: :unauthorized
+  end
+
+  def expired_Signature(exception)
+    render json: { 
+      message: "Unauthorized..."
+    }, status: :unauthorized
   end
 end

@@ -31,8 +31,5 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/me", to: "users#me"
-  # get "/routes", to: "routes#create"
-
-  # resources :routes
+  get "/profile", to: "users#profile"
 end

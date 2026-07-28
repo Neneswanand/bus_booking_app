@@ -69,7 +69,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def me
+  def profile
     @user = @current_user
     
     render :show

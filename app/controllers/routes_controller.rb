@@ -85,3 +85,9 @@ class RoutesController < ApplicationController
       params.require(:route).permit(:source, :destination, :distance, via:[])
     end
 end
+
+#user token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMiwiZXhwIjoxNzg1Mjk4ODI0fQ.EPByQefkJyfsQLw33Krh6Kj_NFkPapWlBGxsoGT1DYU
+
+#Expired token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg0OTU0MzIwfQ.hK5RR65lB01js5jVYJBNF4WthfaztHq-fUnmkhKGP8Q
+
+#super_admin token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg1MzA5MTEzfQ.jrJKlq__XfTdS2nZ--rRWp-aOzDZswFlRnuMyhB6yns

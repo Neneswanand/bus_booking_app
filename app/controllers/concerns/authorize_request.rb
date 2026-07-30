@@ -3,7 +3,7 @@ module AuthorizeRequest extend ActiveSupport::Concern
     before_action :authenticate_request 
   end
 
-  private 
+  private  #Methods below this can not be called outside
 
   def authenticate_request
     header = request.headers["Authorization"] 
@@ -16,10 +16,5 @@ module AuthorizeRequest extend ActiveSupport::Concern
     # user_id = [{"user_id"=> 15, "exp"=> 1784321},{"alg"=> "HS256"}].first["user_id"] = 15
     @current_user = User.find(user_id) 
     # @current_user = User.find(15) 
-    
-    # rescue JWT::DecodeError, JWT::ExpiredSignature
-    # render json: {
-    #   message: "Unauthorized!!!!!"
-    # }, status: :unauthorized
   end
 end

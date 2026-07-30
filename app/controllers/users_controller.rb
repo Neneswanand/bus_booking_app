@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [ :register, :login]
+  skip_before_action :authenticate_request, only: [:register, :login]
   
-  before_action :authorize_admin, only: [ :index ]
+  before_action :authorize_admin, only: [:index ]
 
   before_action :authorize_super_admin, only: [:destroy]
 
-  before_action :set_user, only: [ :show, :update, :destroy ]
+  before_action :set_user, only: [:show, :update, :destroy]
 
 
   def register
@@ -14,40 +14,43 @@ class UsersController < ApplicationController
     render :register, status: :created
   end
 
+
   def index
-    # @users = User.all 
     @users = User.order(:id)
 
     render :index, status: :ok
   end
 
-  def show 
-    # @user = User.find(params[:id])
 
-    # render :show, status: :ok  
+  def show  
     if @current_user.admin? || @current_user.super_admin?
       @user = User.find(params[:id])
+      render :show
     elsif @current_user.id == params[:id].to_i
       @user = @current_user
+      render :show
     else
       render json: {
-        message: "Access Denied!!!!!"
+        message: "Access Denied!!!"
       }, status: :forbidden
     end
   end
 
-  def update
-    # @user = User.find(params[:id])
 
-    @user.update!(user_params)
-  
-    render :update
+  def update
+    if @current_user.id == params[:id].to_i
+      @user.update!(user_params)
+    
+      render :update
+    else
+      render json: {
+        message: "Access Denied..."
+      }
+    end
   end
 
 
   def destroy
-    # @user = User.find(params[:id])
-
     @user.destroy!
     
     render :destroy
@@ -69,10 +72,11 @@ class UsersController < ApplicationController
     end
   end
 
+
   def profile
     @user = @current_user
     
-    render :show
+    render :profile
   end
 
   

@@ -31,9 +31,9 @@ class User < ApplicationRecord
     with: VALID_PASSWORD
   }, on: :create
 
-  validates :phone, presence: true, length: { is: 10}
+  validates :phone, presence: true, numericality: true, length: { is: 10}
 
-  validates :age, presence: true, numericality: true, numericality: {
+  validates :age, presence: true, numericality: {
     greater_than: 0,
     less_than: 150
   }
@@ -56,8 +56,7 @@ class User < ApplicationRecord
   end
 
   def capitalize_gender
-    # self.gender = gender.capitalize if gender.present?
-    self.gender = gender.humanize.delete(" ") if gender.present?
+    self.gender = gender.capitalize if gender.present?
   end
 
   def titleize_name

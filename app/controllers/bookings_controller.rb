@@ -1,10 +1,9 @@
 class BookingsController < ApplicationController
   before_action :set_booking, only: [ :show, :update, :destroy ]
 
-  def index
-    # @bookings = Booking.order(:id)
+  before_action :authorize_super_admin, only: [:destroy]
 
-    # render :index, status: :ok
+  def index
     if @current_user.admin? || @current_user.super_admin?
       @bookings = Booking.all
     else
@@ -14,12 +13,16 @@ class BookingsController < ApplicationController
 
 
   def show
-    render :show, status: :ok
+    if @current_user.admin? || @current_user.super_admin?
+      @booking = Booking.find(params[:id])
+    else
+      @booking = @current_user.bookings.find(params[:id])
+    end
+      render :show
   end
 
 
   def create
-    # @booking = Booking.new(booking_params)
     if @current_user.admin? || @current_user.super_admin?
       @booking = Booking.new(admin_booking_params)
     else
@@ -35,10 +38,15 @@ class BookingsController < ApplicationController
 
 
   def update
-    if @booking.update(booking_params)
-      render :update, status: :ok
+    # if @booking.update(booking_params)
+    #   render :update, status: :ok
+    # else
+    #   render json: @booking.errors, status: :unprocessable_entity
+    # end
+    if @current_user.admin? || @current_user.super_admin?
+      Booking.find(params[:id])
     else
-      render json: @booking.errors.full_messages, status: :unprocessable_entity
+      @current_user.bookings.find(params[:id])
     end
   end
 
@@ -52,6 +60,11 @@ class BookingsController < ApplicationController
   private
     def set_booking
       @booking = Booking.find(params[:id])
+      # if @current_user.admin? || @current_user.super_admin?
+      #   Booking.find(params[:id])
+      # else
+      #   @current_user.bookings.find(params[:id])
+      # end
     end
 
     

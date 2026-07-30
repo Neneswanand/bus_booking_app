@@ -4,8 +4,6 @@ class BusesController < ApplicationController
   before_action :set_bus, only: [ :show, :update, :destroy ]
 
   def index
-    # @buses = Bus.all
-
     @buses = Bus.order(:id)
 
     render :index, status: :ok

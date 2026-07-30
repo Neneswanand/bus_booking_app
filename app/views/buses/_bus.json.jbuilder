@@ -7,6 +7,7 @@ json.registration_number bus.registration_number
 json.source bus.route.source
 json.destination bus.route.destination
 json.distance bus.route.distance
+json.via bus.route.via
 
 
 json.departure_time bus.departure_time

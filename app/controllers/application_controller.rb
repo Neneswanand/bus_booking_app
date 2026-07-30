@@ -19,15 +19,14 @@ class ApplicationController < ActionController::API
 
   def record_invalid(exception)
     render json: {
-      # errors: exception.message
-      errors: exception.record.errors.messages       # Returns structured errors: { "errors": { "name": ["can't be blank"], "email": ["is invalid"] } } 
+      errors: exception.message
     }, status: :unprocessable_entity
   end
 
   def authorize_admin
     unless @current_user.admin? || @current_user.super_admin?
       render json: {
-        message: "Access Denied!!!"
+        message: "Only Admin or Super Admin Allowed To Do..."
       }, status: :forbidden
     end
   end
@@ -35,20 +34,23 @@ class ApplicationController < ActionController::API
   def authorize_super_admin
     unless @current_user.super_admin?
       render json: {
-        message: "Only Super Admin Allowed!!!"
-      }, status: :forbiddenJWT::DecodeError
+        message: "Only Super Admin Allowed To Do..."
+      }, status: :forbidden
     end
   end
 
-  def decode_error(exception)
-    render json: { 
-      message: "Unauthorized!!!"
-    }, status: :unauthorized
-  end
-
-  def expired_Signature(exception)
+  def decode_error
     render json: { 
       message: "Unauthorized..."
     }, status: :unauthorized
   end
+
+  def expired_Signature
+    render json: { 
+      message: "Token Expired..."
+    }, status: :unauthorized
+  end
 end
+
+
+#Expired token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg0OTU0MzIwfQ.hK5RR65lB01js5jVYJBNF4WthfaztHq-fUnmkhKGP8Q

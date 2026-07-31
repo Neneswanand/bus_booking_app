@@ -38,10 +38,12 @@ class UsersController < ApplicationController
 
 
   def update
-    if @current_user.id == params[:id].to_i
+    if @current_user.admin? || @current_user.super_admin?
       @user.update!(user_params)
-    
       render :update
+    elsif @current_user.id == params[:id].to_i
+      @current_user.update!(user_params)
+      @user = @current_user
     else
       render json: {
         message: "Access Denied..."

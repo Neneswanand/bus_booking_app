@@ -53,4 +53,8 @@ class ApplicationController < ActionController::API
 end
 
 
-#Expired token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg0OTU0MzIwfQ.hK5RR65lB01js5jVYJBNF4WthfaztHq-fUnmkhKGP8Q
+# Expired token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg0OTU0MzIwfQ.hK5RR65lB01js5jVYJBNF4WthfaztHq-fUnmkhKGP8Q
+
+# Admin Token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg1NTYzNTIxfQ.I9Bu5kc6JiqfVGV4EDfsGc2Tb1d2LFmojUdRvjRAcdE
+
+# User Token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNiwiZXhwIjoxNzg1NTYwNTU2fQ.vsqinHD-Vv0WE4qPg6yHj8GGyM7V2OrIol_9MOAFn-A

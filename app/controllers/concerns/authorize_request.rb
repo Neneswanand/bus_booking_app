@@ -1,4 +1,6 @@
-module AuthorizeRequest extend ActiveSupport::Concern  
+module AuthorizeRequest 
+  extend ActiveSupport::Concern 
+
   included do 
     before_action :authenticate_request 
   end
@@ -15,6 +17,6 @@ module AuthorizeRequest extend ActiveSupport::Concern
     user_id = decoded.first["user_id"]
     # user_id = [{"user_id"=> 15, "exp"=> 1784321},{"alg"=> "HS256"}].first["user_id"] = 15
     @current_user = User.find(user_id) 
-    # @current_user = User.find(15) 
+    # @current_user = User.find(15). Logged in user stored in @current_user 
   end
 end

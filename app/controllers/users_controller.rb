@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:register, :login]
-  
-  before_action :authorize_admin, only: [:index ]
+  skip_before_action :authenticate_request, only: [ :register, :login ]
 
-  before_action :authorize_super_admin, only: [:destroy]
+  before_action :authorize_admin, only: [ :index ]
 
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authorize_super_admin, only: [ :destroy ]
+
+  before_action :set_user, only: [ :show, :update, :destroy ]
 
 
   def register
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
 
-  def show  
+  def show
     if @current_user.admin? || @current_user.super_admin?
       @user = User.find(params[:id])
       render :show
@@ -40,6 +40,7 @@ class UsersController < ApplicationController
   def update
     if @current_user.admin? || @current_user.super_admin?
       @user.update!(user_params)
+      # @user.update!(patch_params)
       render :update
     elsif @current_user.id == params[:id].to_i
       @current_user.update!(user_params)
@@ -54,7 +55,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy!
-    
+
     render :destroy
   end
 
@@ -62,26 +63,26 @@ class UsersController < ApplicationController
   def login
     @user = User.find_by(email: login_params[:email])
 
-    if @user&.authenticate(login_params[:password]) 
-      
+    if @user&.authenticate(login_params[:password])
+
       @token = JsonWebToken.encode(user_id: @user.id)
 
       render :login, status: :ok
     else
-      render json: { 
+      render json: {
         message: "Invalid Email or Password!!!!!"
-      }, status: :unauthorized         
+      }, status: :unauthorized
     end
   end
 
 
   def profile
     @user = @current_user
-    
+
     render :profile
   end
 
-  
+
   private
 
     def set_user
@@ -94,5 +95,9 @@ class UsersController < ApplicationController
 
     def login_params
       params.permit(:email, :password)
+    end
+
+    def patch_params
+      params.require(:update_key).permit(:name, :email, :phone)
     end
 end

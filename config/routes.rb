@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
   patch "/users/:id", to: "users#update"
 
+  patch "/users/change_passrword", to: "users#change_password"
+
   delete "/users/:id", to: "users#destroy"
 
   resources :bookings 

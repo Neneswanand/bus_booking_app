@@ -7,26 +7,29 @@ class ApplicationController < ActionController::API
 
   rescue_from JWT::DecodeError, with: :decode_error
 
-  rescue_from JWT::ExpiredSignature, with: :expired_Signature
+  rescue_from JWT::ExpiredSignature, with: :expired_signature
 
   private
 
-  def record_not_found(exception)
+  def record_not_found(exception) 
     render json: { 
       errors: exception.message
-    }, status: :not_found
+      # errors: exception.class
+      # errors: exception.backtrace
+      # message: "Could not find user"
+    }, status: :not_found # Rails converts into 404 internally
   end
 
-  def record_invalid(exception)
+  def record_invalid(exception)   # Handles create! and save! failures.
     render json: {
       errors: exception.message
     }, status: :unprocessable_entity
   end
 
   def authorize_admin
-    unless @current_user.admin? || @current_user.super_admin?
+    unless @current_user.admin? || @current_user.super_admin?   # admin? - AcrtiveRecord Enum
       render json: {
-        message: "Only Admin or Super Admin Allowed To Do..."
+        message: "Only Admin Or Super Admin Is Allowed To Do..."
       }, status: :forbidden
     end
   end
@@ -34,18 +37,18 @@ class ApplicationController < ActionController::API
   def authorize_super_admin
     unless @current_user.super_admin?
       render json: {
-        message: "Only Super Admin Allowed To Do..."
+        message: "Only Super Admin Is Allowed To Do..."
       }, status: :forbidden
     end
   end
 
   def decode_error
     render json: { 
-      message: "Unauthorized..."
+      message: "Token invalid..."
     }, status: :unauthorized
   end
 
-  def expired_Signature
+  def expired_signature
     render json: { 
       message: "Token Expired..."
     }, status: :unauthorized
@@ -55,6 +58,3 @@ end
 
 # Expired token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg0OTU0MzIwfQ.hK5RR65lB01js5jVYJBNF4WthfaztHq-fUnmkhKGP8Q
 
-# Admin Token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwiZXhwIjoxNzg1NTYzNTIxfQ.I9Bu5kc6JiqfVGV4EDfsGc2Tb1d2LFmojUdRvjRAcdE
-
-# User Token - eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNiwiZXhwIjoxNzg1NTYwNTU2fQ.vsqinHD-Vv0WE4qPg6yHj8GGyM7V2OrIol_9MOAFn-A
